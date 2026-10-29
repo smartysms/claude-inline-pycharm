@@ -1,0 +1,53 @@
+<idea-plugin>
+    <id>com.inlineai.pycharm</id>
+    <name>Inline AI Prompt</name>
+    <vendor url="https://github.com/smartysms/claude-inline-pycharm">Inline AI Prompt</vendor>
+
+    <description><![CDATA[
+        Edit Python code in place by asking the Claude Code CLI, without leaving the editor.
+        Press Ctrl+Alt+Shift+K (or use the editor context menu), type an instruction, and pick a thinking level.
+        The plugin sends the selection, the enclosing function, the blank line or the current line to the local
+        <code>claude</code> command line tool and receives the rewritten code.
+        The result is applied as an inline diff that you accept or reject, as a single undoable edit.
+        With no instruction at all, it can write code from a comment or from a function's name and docstring.
+        Choose how hard Claude thinks (Think, Think hard, Think harder, Ultrathink), use slash commands such as
+        <code>/doc</code> and <code>/fix</code>, and let it learn your project's API, database, Redis and cache-aside
+        conventions once so generated code matches your style.
+        Requires the Claude Code CLI to be installed and logged in.
+    ]]></description>
+
+    <depends>com.intellij.modules.python</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable
+                parentId="tools"
+                id="com.claudeinline.ClaudeInlineConfigurable"
+                instance="com.claudeinline.ClaudeInlineConfigurable"
+                displayName="Inline AI Prompt"/>
+        <notificationGroup id="Inline AI Prompt" displayType="BALLOON"/>
+    </extensions>
+
+    <actions>
+        <action id="ClaudeInline.Prompt"
+                class="com.claudeinline.InlinePromptAction"
+                text="Inline AI: Prompt..."
+                description="Ask Claude to edit the selection, the enclosing function or the current line">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift K"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
+        <action id="ClaudeInline.Implement"
+                class="com.claudeinline.ImplementFromContextAction"
+                text="Inline AI: Implement from Comment / Name"
+                description="Let Claude write code from the comment above the caret, or from the name, signature and docstring of the function">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift G"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="ClaudeInline.Prompt"/>
+        </action>
+        <action id="ClaudeInline.AnalyzeProject"
+                class="com.claudeinline.AnalyzeProjectAction"
+                text="Inline AI: Analyze Project Patterns"
+                description="Let Claude study this codebase once and save its API, database, Redis and caching conventions">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="ClaudeInline.Implement"/>
+        </action>
+    </actions>
+</idea-plugin>
