@@ -8,8 +8,8 @@ import com.intellij.openapi.util.text.StringUtil
 
 /** Balloon notifications for contexts that have no inline panel to show a banner in. */
 object ClaudeNotifier {
-    private const val GROUP_ID = "Inline AI Prompt"
-    private const val TITLE = "Inline AI Prompt"
+    private const val GROUP_ID = Branding.NOTIFICATION_GROUP_ID
+    private val TITLE = Branding.NAME
     private val LOG = Logger.getInstance(ClaudeNotifier::class.java)
 
     fun error(project: Project?, message: String) = notify(project, message, NotificationType.ERROR)

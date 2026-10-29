@@ -1,3 +1,4 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -43,8 +44,47 @@ kotlin {
     }
 }
 
+val branding = listOf("productName", "productShortName", "productDir", "repoSlug")
+    .associateWith { providers.gradleProperty(it).get() }
+
+tasks.processResources {
+    inputs.properties(branding)
+    filesMatching("messages/Branding.properties") {
+        filter(mapOf("tokens" to branding), ReplaceTokens::class.java)
+    }
+}
+
+// Rewrites the product name in the Markdown docs after it was changed in gradle.properties. The previously applied
+// values are remembered in .branding-applied, so the old text does not have to be known.
+tasks.register("syncDocs") {
+    group = "documentation"
+    description = "Updates README.md, CHANGELOG.md and docs/*.md to the branding in gradle.properties"
+    val marker = layout.projectDirectory.file(".branding-applied").asFile
+    val docs = fileTree(layout.projectDirectory) { include("README.md", "CHANGELOG.md", "docs/**/*.md") }
+    doLast {
+        val previous = if (marker.exists()) {
+            marker.readLines().filter { "=" in it }.associate { it.substringBefore("=") to it.substringAfter("=") }
+        } else {
+            branding
+        }
+        // The full name contains the short name, so it has to be replaced first.
+        val order = listOf("productName", "productShortName", "repoSlug", "productDir")
+        docs.forEach { file ->
+            var text = file.readText()
+            order.forEach { key -> text = text.replace(previous.getValue(key), branding.getValue(key)) }
+            file.writeText(text)
+        }
+        marker.writeText(branding.entries.joinToString("\n", postfix = "\n") { "${it.key}=${it.value}" })
+    }
+}
+
 intellijPlatform {
     pluginConfiguration {
+        name = branding.getValue("productName")
+        vendor {
+            name = branding.getValue("productName")
+            url = "https://github.com/${branding.getValue("repoSlug")}"
+        }
         ideaVersion {
             sinceBuild = "262"
             // Explicit null: without it the plugin would default to "262.*".

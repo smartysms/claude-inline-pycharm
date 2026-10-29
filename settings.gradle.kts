@@ -1,1 +1,1 @@
-rootProject.name = "inline-ai-prompt"
+rootProject.name = providers.gradleProperty("artifactName").get()

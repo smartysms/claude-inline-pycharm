@@ -28,7 +28,7 @@ class ProjectPatternsStoreTest {
     fun `path is under the inline-ai directory`() {
         val p = ProjectPatternsStore.path(base())
         assertEquals("project-patterns.md", p.fileName.toString())
-        assertEquals(".inline-ai", p.parent.fileName.toString())
+        assertEquals(Branding.DIR, p.parent.fileName.toString())
     }
 
     @Test

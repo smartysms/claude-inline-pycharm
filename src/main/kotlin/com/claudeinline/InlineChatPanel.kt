@@ -107,7 +107,7 @@ class InlineChatPanel(
             isContentAreaFilled = false
             addActionListener { callbacks.onClose() }
         }
-        val title = JBLabel("<html><b>Inline AI</b>  " + escape(targetLabel) + "</html>")
+        val title = JBLabel("<html><b>" + escape(Branding.SHORT) + "</b>  " + escape(targetLabel) + "</html>")
         val right = JPanel(FlowLayout(FlowLayout.RIGHT, JBUI.scale(4), 0)).apply {
             isOpaque = false
             add(levelBox)

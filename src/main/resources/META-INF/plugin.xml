@@ -1,4 +1,5 @@
 <idea-plugin>
+    <!-- id, name and vendor are overwritten from gradle.properties (productName, repoSlug) at build time. -->
     <id>com.inlineai.pycharm</id>
     <name>Inline AI Prompt</name>
     <vendor url="https://github.com/smartysms/claude-inline-pycharm">Inline AI Prompt</vendor>
@@ -18,36 +19,32 @@
 
     <depends>com.intellij.modules.python</depends>
 
+    <!-- All user-visible product names come from messages/Branding.properties, filled from gradle.properties. -->
+    <resource-bundle>messages.Branding</resource-bundle>
+
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable
                 parentId="tools"
                 id="com.claudeinline.ClaudeInlineConfigurable"
                 instance="com.claudeinline.ClaudeInlineConfigurable"
-                displayName="Inline AI Prompt"/>
-        <notificationGroup id="Inline AI Prompt" displayType="BALLOON"/>
+                bundle="messages.Branding"
+                key="configurable.name"/>
+        <notificationGroup id="InlineAI.Notifications" displayType="BALLOON"
+                           bundle="messages.Branding" key="notification.group"/>
     </extensions>
 
     <actions>
-        <action id="ClaudeInline.Prompt"
-                class="com.claudeinline.InlinePromptAction"
-                text="Inline AI: Prompt..."
-                description="Ask Claude to edit the selection, the enclosing function or the current line">
+        <action id="InlineAI.Prompt" class="com.claudeinline.InlinePromptAction">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift K"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
-        <action id="ClaudeInline.Implement"
-                class="com.claudeinline.ImplementFromContextAction"
-                text="Inline AI: Implement from Comment / Name"
-                description="Let Claude write code from the comment above the caret, or from the name, signature and docstring of the function">
+        <action id="InlineAI.Implement" class="com.claudeinline.ImplementFromContextAction">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift G"/>
-            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="ClaudeInline.Prompt"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="InlineAI.Prompt"/>
         </action>
-        <action id="ClaudeInline.AnalyzeProject"
-                class="com.claudeinline.AnalyzeProjectAction"
-                text="Inline AI: Analyze Project Patterns"
-                description="Let Claude study this codebase once and save its API, database, Redis and caching conventions">
+        <action id="InlineAI.AnalyzeProject" class="com.claudeinline.AnalyzeProjectAction">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="ClaudeInline.Implement"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="InlineAI.Implement"/>
         </action>
     </actions>
 </idea-plugin>

@@ -78,7 +78,7 @@ class InlineSession private constructor(
         if (loaded == null) {
             panel.showBanner(
                 BannerKind.INFO,
-                "No project patterns yet - run Tools | Inline AI: Analyze Project Patterns to match your API/DB/Redis style",
+                "No project patterns yet - run Tools | ${Branding.SHORT}: Analyze Project Patterns to match your API/DB/Redis style",
             )
             return
         }
@@ -146,7 +146,7 @@ class InlineSession private constructor(
     }
 
     override fun onShowDiff() {
-        DiffPreviewDialog(project, fileType(), "Inline AI: ${initialTarget.label}", roundStartText, document.text).show()
+        DiffPreviewDialog(project, fileType(), "${Branding.SHORT}: ${initialTarget.label}", roundStartText, document.text).show()
     }
 
     // ---- rounds ----
@@ -182,7 +182,7 @@ class InlineSession private constructor(
 
         panel.clearBanner()
         panel.setState(PanelState.PROCESSING, level.label)
-        val task = object : Task.Backgroundable(project, "Inline AI (${level.label}): ${abbreviate(instruction)}", true) {
+        val task = object : Task.Backgroundable(project, "${Branding.SHORT} (${level.label}): ${abbreviate(instruction)}", true) {
             private var response: EditResponse? = null
 
             override fun run(indicator: ProgressIndicator) {
@@ -298,8 +298,8 @@ class InlineSession private constructor(
     companion object {
         private val KEY = Key.create<InlineSession>("claude.inline.session")
         private val LOG = Logger.getInstance(InlineSession::class.java)
-        private const val APPLY_COMMAND = "Inline AI Edit"
-        private const val REJECT_COMMAND = "Inline AI Reject"
+        private val APPLY_COMMAND = "${Branding.SHORT} Edit"
+        private val REJECT_COMMAND = "${Branding.SHORT} Reject"
         private const val CHANGED_MESSAGE = "The code changed while Claude was working; result discarded"
         private const val MAX_TITLE = 40
 

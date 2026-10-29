@@ -11,7 +11,7 @@ import com.intellij.ui.dsl.builder.bindText
 import com.intellij.ui.dsl.builder.columns
 import com.intellij.ui.dsl.builder.panel
 
-class ClaudeInlineConfigurable : BoundConfigurable("Inline AI Prompt") {
+class ClaudeInlineConfigurable : BoundConfigurable(Branding.NAME) {
 
     override fun createPanel(): DialogPanel {
         val settings = ClaudeInlineSettings.getInstance()
@@ -50,7 +50,7 @@ class ClaudeInlineConfigurable : BoundConfigurable("Inline AI Prompt") {
             row {
                 checkBox("Use project patterns (learned from this codebase) when generating code")
                     .bindSelected(state::useProjectPatterns)
-                    .comment("Run Tools | Inline AI: Analyze Project Patterns to create or refresh the profile (.inline-ai/project-patterns.md).")
+                    .comment("Run Tools | ${Branding.SHORT}: Analyze Project Patterns to create or refresh the profile (${Branding.DIR}/project-patterns.md).")
             }
             row("Timeout (seconds):") {
                 intTextField(ClaudeInlineSettings.MIN_TIMEOUT_SECONDS..ClaudeInlineSettings.MAX_TIMEOUT_SECONDS)

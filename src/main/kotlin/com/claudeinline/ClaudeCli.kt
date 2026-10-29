@@ -26,8 +26,8 @@ data class ClaudeCliOptions(
 )
 
 object ClaudeCli {
-    const val NOT_FOUND_MESSAGE =
-        "Claude CLI not found. Install Claude Code or set its path in Settings | Tools | Inline AI Prompt."
+    val NOT_FOUND_MESSAGE =
+        "Claude CLI not found. Install Claude Code or set its path in Settings | Tools | ${Branding.NAME}."
 
     private const val READ_ONLY_TOOLS = "Read,Grep,Glob"
     private const val POLL_MILLIS = 200L
@@ -138,7 +138,7 @@ object ClaudeCli {
             if (now >= deadlineNanos) {
                 throw ClaudeEditException(
                     "Claude did not answer within $timeoutSeconds seconds. " +
-                        "Raise the timeout in Settings | Tools | Inline AI Prompt or try a lower thinking level.",
+                        "Raise the timeout in Settings | Tools | ${Branding.NAME} or try a lower thinking level.",
                 )
             }
             val seconds = TimeUnit.NANOSECONDS.toSeconds(now - startNanos)

@@ -33,7 +33,7 @@ class AnalyzeProjectAction : AnAction(), DumbAware {
             return
         }
         val options = ClaudeInlineSettings.getInstance().cliOptions(ProjectAnalyzer.LEVEL)
-        object : Task.Backgroundable(project, "Inline AI: analyzing project patterns", true) {
+        object : Task.Backgroundable(project, "${Branding.SHORT}: analyzing project patterns", true) {
             private var saved: Path? = null
             private var failure: String? = null
 
@@ -59,10 +59,10 @@ class AnalyzeProjectAction : AnAction(), DumbAware {
     }
 
     private fun notifyDone(project: Project, file: Path) {
-        val group = NotificationGroupManager.getInstance().getNotificationGroup("Inline AI Prompt")
+        val group = NotificationGroupManager.getInstance().getNotificationGroup(Branding.NOTIFICATION_GROUP_ID)
             ?: return ClaudeNotifier.info(project, "Project patterns saved to $file")
         val notification = group.createNotification(
-            "Inline AI Prompt", "Project patterns saved to .inline-ai/project-patterns.md", NotificationType.INFORMATION,
+            Branding.NAME, "Project patterns saved to ${Branding.DIR}/project-patterns.md", NotificationType.INFORMATION,
         )
         notification.addAction(NotificationAction.createSimple("Open profile") { openFile(project, file) })
         notification.notify(project)

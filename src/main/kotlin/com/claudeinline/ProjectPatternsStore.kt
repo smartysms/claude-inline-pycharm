@@ -9,12 +9,12 @@ import java.time.Instant
 
 data class LoadedPatterns(val text: String, val updatedAt: Instant)
 
-/** Reads and writes the learned project profile at `<base>/.inline-ai/project-patterns.md`. */
+/** Reads and writes the learned project profile at `<base>/<Branding.DIR>/project-patterns.md`. */
 object ProjectPatternsStore {
     const val MAX_INJECTED_CHARS = 12_000
     private const val TRUNCATED_LINE = "[... truncated ...]"
 
-    fun path(basePath: String): Path = Paths.get(basePath, ".inline-ai", "project-patterns.md")
+    fun path(basePath: String): Path = Paths.get(basePath, Branding.DIR, "project-patterns.md")
 
     fun load(basePath: String?): LoadedPatterns? {
         if (basePath.isNullOrBlank()) return null

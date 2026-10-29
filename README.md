@@ -188,6 +188,13 @@ platformPath=C:/Program Files/JetBrains/PyCharm
 
 or pass it once: `./gradlew build -PplatformPath="C:/Program Files/JetBrains/PyCharm"`.
 
+### Renaming the product
+
+The product name is defined once, in `gradle.properties` (`productName`, `productShortName`, `productDir`,
+`artifactName`, `repoSlug`). The plugin manifest, menu and settings texts, notification group, undo entries and the
+zip name all follow from it at build time. After changing the values, run `./gradlew syncDocs` to update this README,
+the changelog and `docs/` too.
+
 Two tests call the real Claude CLI and only run with `CLAUDE_CLI_IT=1` set. See
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the design and [CHANGELOG.md](CHANGELOG.md) for releases.
 
